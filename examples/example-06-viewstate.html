@@ -1,0 +1,58 @@
+<html>
+  <head>
+    <script src="https://unpkg.com/deck.gl@^8.7.0/dist.min.js"></script>
+    <script src="https://unpkg.com/@deck.gl/carto@^8.7.0/dist.min.js"></script>
+    
+    <script src="https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.js"></script>
+    <link href="https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.css" rel="stylesheet" />
+
+    <style>
+      #viewStateInfo {
+        width: 250px; 
+        height: 50px; 
+        position: absolute; 
+        bottom: 20px; 
+        left: 50px; 
+        background-color: #FFFFFF;
+        padding: 5px;
+      }
+    </style>
+  </head>
+
+  <body style="margin: 0; padding: 0">
+    <div id="map" style="width: 100vw; height: 100vh;"></div>
+    <div id="viewstateInfo">
+      <span>Zoom level:</span>
+      <span id="zoomLevel"></span>
+    </div>
+  </body>
+
+  <script type="text/javascript">
+    const INITIAL_VIEW_STATE = {
+      latitude: 41.98,
+      longitude: 2.82,
+      zoom: 14,
+      pitch: 45,
+    };
+
+    const deckgl = new deck.DeckGL({
+      container: 'map',
+      map: maplibregl,
+      mapStyle: `https://basemaps.cartocdn.com/gl/positron-gl-style/style.json`,
+
+      initialViewState: INITIAL_VIEW_STATE,
+      controller: true,
+
+      onViewStateChange: ({ viewState }) => {
+        showZoomLevel(viewState.zoom);
+      },
+
+      layers: []  
+    });
+
+    function showZoomLevel(zoomLevel) {
+      document.getElementById('zoomLevel').innerText = zoomLevel;
+    }
+
+  </script>
+</html>

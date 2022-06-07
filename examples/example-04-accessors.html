@@ -1,0 +1,58 @@
+<html>
+  <head>
+    <script src="https://unpkg.com/deck.gl@^8.7.0/dist.min.js"></script>
+    <script src="https://unpkg.com/@deck.gl/carto@^8.7.0/dist.min.js"></script>
+    
+    <script src="https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.js"></script>
+    <link href="https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.css" rel="stylesheet" />
+  </head>
+
+  <body style="margin: 0; padding: 0">
+    <div id="map" style="width: 100vw; height: 100vh;"></div>
+  </body>
+
+  <script type="text/javascript">
+    const deckgl = new deck.DeckGL({
+      container: 'map',
+      map: maplibregl,
+      mapStyle: `https://basemaps.cartocdn.com/gl/positron-gl-style/style.json`,
+
+      initialViewState: {
+        latitude: 0,
+        longitude: 0,
+        zoom: 1,
+      },
+      controller: true,
+
+      layers: [
+        new deck.GeoJsonLayer({
+          id: 'countries',
+          data: `https://d2ad6b4ur7yvpq.cloudfront.net/naturalearth-3.3.0/ne_110m_admin_0_countries.geojson`, 
+          getFillColor: (d) => {
+            switch (d.properties.continent) {
+              case 'Africa':
+                return [251, 180, 174];
+              case 'Antarctica':
+                return [179, 205, 227];
+              case 'Asia':
+                return [204, 235, 197];
+              case 'Europe':
+                return [222, 203, 228];
+              case 'Oceania':
+                return [254, 217, 166];
+              case 'North America': 
+                return [255, 255, 204];
+              case 'South America':
+                return [229, 216, 189];
+              default:
+                return [128, 128, 128];
+            }
+          },
+          getLineColor: [100, 100, 100],
+          lineWidthMinPixels: 1,
+        }),
+      ]  
+    });
+
+  </script>
+</html>

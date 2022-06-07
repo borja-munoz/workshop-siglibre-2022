@@ -1,0 +1,41 @@
+<html>
+  <head>
+    <script src="https://unpkg.com/deck.gl@^8.7.0/dist.min.js"></script>
+    <script src="https://unpkg.com/@deck.gl/carto@^8.7.0/dist.min.js"></script>
+    
+    <script src="https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.js"></script>
+    <link href="https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.css" rel="stylesheet" />
+  </head>
+
+  <body style="margin: 0; padding: 0">
+    <div id="map" style="width: 100vw; height: 100vh;"></div>
+  </body>
+
+  <script type="text/javascript">
+    const deckgl = new deck.DeckGL({
+      container: 'map',
+      map: maplibregl,
+      mapStyle: `https://basemaps.cartocdn.com/gl/positron-gl-style/style.json`,
+
+      initialViewState: {
+        latitude: 41.98,
+        longitude: 2.82,
+        zoom: 14,
+      },
+      controller: true,
+
+      layers: [
+        new deck.MVTLayer({
+          data: `https://geoserveis.icgc.cat/servei/catalunya/contextmaps/vt/{z}/{x}/{y}.pbf`,
+
+          minZoom: 0,
+          maxZoom: 14,
+          getLineColor: [192, 192, 192],
+          getFillColor: [150, 150, 150],
+          lineWidthMinPixels: 1
+        })      
+      ]  
+    });
+
+  </script>
+</html>

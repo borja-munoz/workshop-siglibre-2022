@@ -1,0 +1,47 @@
+<html>
+  <head>
+    <script src="https://unpkg.com/deck.gl@^8.7.0/dist.min.js"></script>
+    <script src="https://unpkg.com/@deck.gl/carto@^8.7.0/dist.min.js"></script>
+  </head>
+
+  <body style="margin: 0; padding: 0">
+    <div id="map" style="width: 100vw; height: 100vh;"></div>
+  </body>
+
+  <script type="text/javascript">
+    const deckgl = new deck.DeckGL({
+      container: 'map',
+
+      initialViewState: {
+        latitude: 0,
+        longitude: 0,
+        zoom: 1,
+      },
+      controller: true,
+
+      layers: [
+        new deck.TileLayer({
+          id: 'openstreetmap',
+          data: 'https://c.tile.openstreetmap.org/{z}/{x}/{y}.png',
+
+          minZoom: 0,
+          maxZoom: 14,
+          tileSize: 256,
+
+          renderSubLayers: props => {
+            const {
+              bbox: {west, south, east, north}
+            } = props.tile;
+
+            return new deck.BitmapLayer(props, {
+              data: null,
+              image: props.data,
+              bounds: [west, south, east, north]
+            });
+          }
+        })
+      ]     
+    });
+
+  </script>
+</html>

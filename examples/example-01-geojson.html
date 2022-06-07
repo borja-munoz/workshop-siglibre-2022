@@ -1,0 +1,35 @@
+<html>
+  <head>
+    <script src="https://unpkg.com/deck.gl@^8.7.0/dist.min.js"></script>
+    <script src="https://unpkg.com/@deck.gl/carto@^8.7.0/dist.min.js"></script>
+  </head>
+
+  <body style="margin: 0; padding: 0">
+    <div id="map" style="width: 100vw; height: 100vh;"></div>
+  </body>
+
+  <script type="text/javascript">
+
+    const deckgl = new deck.DeckGL({
+      container: 'map',
+
+      initialViewState: {
+        latitude: 0,
+        longitude: 0,
+        zoom: 1,
+      },
+      controller: true,
+
+      layers: [
+        new deck.GeoJsonLayer({
+          id: 'countries',
+          data: `https://d2ad6b4ur7yvpq.cloudfront.net/naturalearth-3.3.0/ne_110m_admin_0_countries.geojson`, 
+          getFillColor: [173, 216, 230],
+          getLineColor: [100, 150, 175],
+          lineWidthMinPixels: 1,
+        }),
+      ]
+    });
+
+  </script>
+</html>
