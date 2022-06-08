@@ -9,12 +9,10 @@
 
   <body style="margin: 0; padding: 0">
     <div id="map" style="width: 100vw; height: 100vh;"></div>
-    <div id="pickingInfo"></div>
   </body>
 
   <script type="text/javascript">
     let highlightingEnabled = true;
-    let zoom = 1;
 
     const INITIAL_VIEW_STATE = {
       latitude: 0,
@@ -22,38 +20,22 @@
       zoom: zoom
     };
 
-
     function render() {
       const layers = [
         new deck.GeoJsonLayer({
           id: 'populated-places',
           data: `https://d2ad6b4ur7yvpq.cloudfront.net/naturalearth-3.3.0/ne_50m_populated_places.geojson`, 
-          // getFillColor: [173, 216, 230],
-          getFillColor: (d) => {
-            if (zoom < 5) {
-              return [173, 216, 230];
-            }
-            else if (zoom < 10) {
-              return [216, 173, 230];
-            }
-            else {
-              return [216, 230, 173];
-            }
-          },
-          getPointRadius: zoom,
+          getFillColor: [173, 216, 230],
+          getPointRadius: 6,
           pointRadiusUnits: 'pixels',
 
           pickable: true,
-          // autoHighlight: highlightingEnabled,
-          // onClick: (pickingInfo) => {
-          //   if (pickingInfo.picked) {
-          //     highlightingEnabled = !highlightingEnabled;
-          //     render();
-          //   }
-          // }
-
-          updateTriggers: {
-            getFillColor: [zoom]
+          autoHighlight: highlightingEnabled,
+          onClick: (pickingInfo) => {
+            if (pickingInfo.picked) {
+              highlightingEnabled = !highlightingEnabled;
+              render();
+            }
           }
         })
       ];
@@ -69,11 +51,6 @@
       controller: true,
 
       layers: [],
-
-      onViewStateChange: ({ viewState }) => {
-        zoom = viewState.zoom;
-        render();
-      },
     });
 
     render();
