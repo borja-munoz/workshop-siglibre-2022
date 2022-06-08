@@ -1,0 +1,51 @@
+<html>
+  <head>
+    <script src="https://unpkg.com/deck.gl@^8.7.0/dist.min.js"></script>
+    <script src="https://unpkg.com/@deck.gl/carto@^8.7.0/dist.min.js"></script>
+    
+    <script src="https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.js"></script>
+    <link href="https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.css" rel="stylesheet" />
+  </head>
+
+  <body style="margin: 0; padding: 0">
+    <div id="map" style="width: 100vw; height: 100vh;"></div>
+  </body>
+
+  <script type="text/javascript">
+    const INITIAL_VIEW_STATE = {
+      latitude: 0,
+      longitude: 0,
+      zoom: 2,
+      pitch: 45,
+    };
+    
+    function render() {
+      const layers = [
+        new deck.GeoJsonLayer({
+          id: 'countries',
+          data: `https://d2ad6b4ur7yvpq.cloudfront.net/naturalearth-3.3.0/ne_110m_admin_0_countries.geojson`, 
+          getFillColor: [173, 216, 230],
+          getLineColor: [100, 150, 175],
+          lineWidthMinPixels: 2,
+          extruded: true,
+          getElevation: (d) => d.properties.pop_est / 1000,
+        }),
+      ];
+      deckgl.setProps({layers});
+    }
+
+    const deckgl = new deck.DeckGL({
+      container: 'map',
+      map: maplibregl,
+      mapStyle: `https://basemaps.cartocdn.com/gl/positron-gl-style/style.json`,
+
+      initialViewState: INITIAL_VIEW_STATE,
+      controller: true,
+
+      layers: [],
+    });
+
+    render();
+
+  </script>
+</html>

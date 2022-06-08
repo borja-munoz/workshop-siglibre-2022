@@ -1,0 +1,59 @@
+<html>
+  <head>
+    <script src="https://unpkg.com/deck.gl@^8.7.0/dist.min.js"></script>
+    <script src="https://unpkg.com/@deck.gl/carto@^8.7.0/dist.min.js"></script>
+    
+    <script src="https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.js"></script>
+    <link href="https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.css" rel="stylesheet" />
+  </head>
+
+  <body style="margin: 0; padding: 0">
+    <div id="map" style="width: 100vw; height: 100vh;"></div>
+  </body>
+
+  <script type="text/javascript">
+    const INITIAL_VIEW_STATE = {
+      latitude: 40,
+      longitude: -3,
+      zoom: 6
+    };
+
+    let quadkeyData;
+
+    async function initialize() {
+      await fetch('https://bmunoz.carto.com/api/v2/sql?q=SELECT quadkey, avg_d_kbps FROM ookla_mobile_q1_2021_spain&format=JSON')
+      .then(response => response.json())
+      .then(data => quadkeyData = data.rows);
+
+      render();
+    }
+
+    function render() {
+      const layers = [
+        new deck.QuadkeyLayer({
+          id: 'ookla',
+          data: quadkeyData, 
+          wireframe: false,
+          filled: true,
+          getQuadkey: d => d.quadkey,
+          getFillColor: d => [d.avg_d_kbps / 100000 * 255, 0, 0],
+        })
+      ];
+      deckgl.setProps({layers});
+    }
+    
+    const deckgl = new deck.DeckGL({
+      container: 'map',
+      map: maplibregl,
+      mapStyle: `https://basemaps.cartocdn.com/gl/positron-gl-style/style.json`,
+
+      initialViewState: INITIAL_VIEW_STATE,
+      controller: true,
+
+      layers: [],
+    });
+
+    initialize();
+
+  </script>
+</html>
