@@ -1,0 +1,18 @@
+repo_name: borja-munoz/workshop-siglibre-2022
+report_id: 249a9d2d19c419cb28885e690c5931bc
+repo_type: Public
+timestamp: '2023-11-10T11:23:21+00:00'
+requested_by: borja-munoz
+provider: github
+branch: main
+detected_tools_count: 1
+tools:
+- name: Git
+  description: Fast, scalable, distributed revision control system
+  website_url: http://git-scm.com/
+  open_source: true
+  hosted_saas: false
+  category: Build, Test, Deploy
+  sub_category: Version Control System
+  image_url: https://img.stackshare.io/service/1046/git.png
+  detection_source: Repo Metadata
